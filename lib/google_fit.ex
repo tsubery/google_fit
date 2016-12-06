@@ -1,0 +1,2 @@
+defmodule GoogleFit do
+end
