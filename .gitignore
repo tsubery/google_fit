@@ -19,3 +19,4 @@ erl_crash.dump
 tags
 
 test/data/*_regression.json
+.idea
