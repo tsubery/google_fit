@@ -1,4 +1,8 @@
-defmodule GoogleFit.Dataset.WeightSummary do
+defmodule GoogleFit.Dataset.NumberSummary do
+  @moduledoc """
+    This module represents daily aggregation for numeric data types
+  """
+
   defstruct ~w[average maximum minimum]a
 
   @doc false

@@ -30,7 +30,8 @@ defmodule GoogleFit.Mixfile do
     [
       {:oauth2, "~> 0.8"},
       {:poison, "~> 3.0"},
-      {:dialyxir, "~> 0.4", only: [:dev], runtime: false}
+      {:dialyxir, "~> 0.4", only: [:dev], runtime: false},
+      {:credo, "~> 0.5", only: [:dev, :test]}
     ]
   end
 end

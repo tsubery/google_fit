@@ -1,11 +1,17 @@
 defmodule GoogleFit.Session do
+  @moduledoc """
+    This module represents a span of time where the user has been engaged
+    in a single activity.
+    A session can be composed of multiple segments with various activity types.
+    For example soccer could have rest in half-time.
+  """
   alias GoogleFit.{Application, Request}
   import GoogleFit.Util
 
   @path "/sessions"
   @enforce_keys ~w[
-    id name description start_time end_time
-    modified_time application activity_type active_time_millis
+    id name description start_time end_time modified_time application
+    activity_type active_time_millis
   ]a
 
   defstruct @enforce_keys
@@ -22,7 +28,8 @@ defmodule GoogleFit.Session do
 
   @doc false
   def decode(json_map = %{}) do
-    Map.fetch!(json_map, "session") |>
+    json_map |>
+    Map.fetch!("session") |>
     Enum.map(fn map ->
       %__MODULE__{
         id: map["id"],

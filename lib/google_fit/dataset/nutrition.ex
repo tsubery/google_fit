@@ -1,4 +1,8 @@
 defmodule GoogleFit.Dataset.Nutrition do
+  @moduledoc """
+    This struct represents a nutrition datapoint value
+  """
+
   import GoogleFit.Util
 
   @meal_types %{

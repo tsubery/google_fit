@@ -1,4 +1,7 @@
 defmodule GoogleFit.Dataset.ActivitySummary do
+  @moduledoc """
+    This struct represents a aggregated activity datapoint value
+  """
   defstruct ~w[
     activity duration_millis num_segments
     ]a

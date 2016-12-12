@@ -1,4 +1,8 @@
 defmodule GoogleFit.ActivityType do
+  @moduledoc """
+    This module is a namespace for all supported activity types.
+  """
+
   alias __MODULE__, as: Self
   @constants %{
     Self.InVehicle => 0,
@@ -116,13 +120,16 @@ defmodule GoogleFit.ActivityType do
 
   @name_by_id @constants |> Map.new(fn ({name, val}) -> {val, name} end)
 
+  @doc false
   def code(activity_type) when is_atom(activity_type) do
     Map.fetch!(@constants, activity_type)
   end
 
+  @doc false
   def decode([%{"intVal" => code}]) do
     {find(code), Self}
   end
 
+  @doc false
   def find(id), do: @name_by_id[id]
 end

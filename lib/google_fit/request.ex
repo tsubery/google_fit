@@ -1,4 +1,5 @@
 defmodule GoogleFit.Request do
+  @moduledoc false
   @base_url "https://www.googleapis.com/fitness/v1/users/me"
   @json_headers [{"content-type", "application/json"}]
 
@@ -6,22 +7,24 @@ defmodule GoogleFit.Request do
 
   def process(%__MODULE__{
     method: :get,
-    client: client = %{ __struct__: http_lib},
+    client: client = %{__struct__: http_lib},
     params: params,
     path: path
   }, decoder) do
-    http_lib.get(client, url(path), [], params: params) |>
+    client
+    |> http_lib.get(url(path), [], params: params) |>
     handle_reply(decoder)
   end
 
   def process(%__MODULE__{
     method: :post,
-    client: client = %{ __struct__: http_lib},
+    client: client = %{__struct__: http_lib},
     body: body,
     path: path
   }, decoder) do
 
-    http_lib.post(client, url(path), body, @json_headers)
+    client
+    |> http_lib.post(url(path), body, @json_headers)
     |> handle_reply(decoder)
   end
 

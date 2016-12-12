@@ -1,4 +1,10 @@
 defmodule GoogleFit.DataSource do
+  @moduledoc """
+    This struct represents a single source of data in the platform.
+    It could be a single sensor or app that reports data or a source that is
+    derived from one or more other sources by merger and/or aggregation
+  """
+
   alias GoogleFit.{Application, DataType, Request}
   @keys ~w[id name type data_type device application]a
   defstruct @keys
@@ -22,6 +28,10 @@ defmodule GoogleFit.DataSource do
   end
 
   defmodule Device do
+    @moduledoc """
+      This struct represents details about a device that is reporting data to a data source
+    """
+
     @keys ~w[uid type version model manufacturer]a
     defstruct @keys
 

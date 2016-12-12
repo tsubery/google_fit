@@ -1,4 +1,8 @@
 defmodule GoogleFit.Dataset do
+  @moduledoc """
+    This struct represents a span of time and the relevant data points for a data source
+  """
+
   alias GoogleFit.{Request, DataSource, Dataset.Point}
   import GoogleFit.Util
 
@@ -8,10 +12,10 @@ defmodule GoogleFit.Dataset do
   @path "datasets"
   @nano_factor 1_000_000_000
 
-  def get(client=%{},
+  def get(client = %{},
           %DataSource{id: ds_id},
-          start_time=%DateTime{},
-          end_time= %DateTime{}) do
+          start_time = %DateTime{},
+          end_time =  %DateTime{}) do
 
     time_range = "#{to_nanos(start_time)}-#{to_nanos(end_time)}"
     path = [DataSource.path, ds_id, @path, time_range] |> Enum.join("/")

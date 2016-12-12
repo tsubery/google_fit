@@ -1,8 +1,12 @@
 defmodule GoogleFit.Util do
+  @moduledoc false
+
+  @doc false
   def atomize_keys(map = %{}) do
     transform_keys(map, &String.to_atom/1)
   end
 
+  @doc false
   def underscorize_keys(map = %{}) do
     transform_keys(map, &Macro.underscore/1)
   end
@@ -15,6 +19,7 @@ defmodule GoogleFit.Util do
     )
   end
 
+  @doc false
   def transform_values(map = %{}, fun) do
     Enum.reduce(map, %{},
       fn({k,v}, acc) ->
@@ -23,6 +28,7 @@ defmodule GoogleFit.Util do
     )
   end
 
+  @doc false
   def normalize_keys(map = %{}, keys) do
     map |>
       underscorize_keys |>
@@ -32,18 +38,23 @@ defmodule GoogleFit.Util do
       elem(0)
   end
 
+  @doc false
   def from_nanos(str), do: to_datetime(str, :nanosecond)
+
+  @doc false
   def from_millis(str), do: to_datetime(str, :millisecond)
 
+  @doc false
   defp to_datetime(nil, _), do: nil
   defp to_datetime(str, unit) do
     str |> String.to_integer |> DateTime.from_unix!(unit)
   end
 
+  @doc false
   def date_to_millis(date = %Date{}) do
     dt_iso = "#{Date.to_iso8601(date)}T00:00:00.000Z"
     case DateTime.from_iso8601(dt_iso) do
-      {:ok, date_time, _offset } ->
+      {:ok, date_time, _offset} ->
          DateTime.to_unix(date_time) * 1_000
       error ->
         raise "Can't convert to millis #{inspect date} #{inspect error}"

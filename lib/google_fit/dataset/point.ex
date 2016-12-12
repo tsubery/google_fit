@@ -3,7 +3,7 @@ defmodule GoogleFit.Dataset.Point do
     This struct represents a datapoint in a dataset
   """
 
-  alias GoogleFit.Dataset.{Nutrition, ActivitySummary, WeightSummary}
+  alias GoogleFit.Dataset.{Nutrition, ActivitySummary, NumberSummary}
   alias GoogleFit.ActivityType
   import GoogleFit.Util
 
@@ -29,7 +29,7 @@ defmodule GoogleFit.Dataset.Point do
 
   @numeric_names ~w[calories.expended distance.delta calories.bmr hydration weight speed step_count.delta]
   @numeric_units ~w[kCal meters kCal/day liters kg meters/second steps]a
-  @numeric_map Enum.zip(@numeric_names, @numeric_units) |> Map.new
+  @numeric_map @numeric_names |> Enum.zip(@numeric_units) |> Map.new
   def decode_value(dtn, [%{"fpVal" => val}]) when dtn in @numeric_names do
     {val, Map.fetch!(@numeric_map, dtn)}
   end
@@ -38,9 +38,10 @@ defmodule GoogleFit.Dataset.Point do
     {val, Map.fetch!(@numeric_map, dtn)}
   end
 
-  @decoder_names ~w[nutrition nutrition.summary activity.summary weight.summary activity.segment]
-  @decoder_modules [Nutrition, Nutrition, ActivitySummary, WeightSummary, ActivityType]
-  @decoder_map Enum.zip(@decoder_names, @decoder_modules) |> Map.new
+  @decoder_names ~w[nutrition nutrition.summary activity.summary activity.segment weight.summary]
+  @decoder_modules [Nutrition, Nutrition, ActivitySummary, ActivityType,
+                    NumberSummary]
+  @decoder_map @decoder_names |> Enum.zip(@decoder_modules) |> Map.new
   @doc false
   def decode_value(dtn, json_list) when dtn in @decoder_names do
     module = Map.fetch!(@decoder_map, dtn)

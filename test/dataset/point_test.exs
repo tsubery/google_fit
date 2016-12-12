@@ -21,64 +21,64 @@ defmodule GoogleFitTest.Dataset.Point do
   end
 
   test "decode com.google.calories.expended" do
-    {value, unit} = Point.decode_value("calories.expended", [%{"intVal" => 54321}])
-    assert value == 54321
+    {value, unit} = Point.decode_value("calories.expended", [%{"intVal" => 54_321}])
+    assert value == 54_321
     assert unit == :kCal
 
-    {value, unit} = Point.decode_value("calories.expended", [%{"fpVal" => 12345}])
-    assert value == 12345
+    {value, unit} = Point.decode_value("calories.expended", [%{"fpVal" => 12_345}])
+    assert value == 12_345
     assert unit == :kCal
   end
   test "decode com.google.distance.delta" do
-    {value, unit} = Point.decode_value("calories.bmr", [%{"intVal" => 54321}])
-    assert value == 54321
+    {value, unit} = Point.decode_value("calories.bmr", [%{"intVal" => 54_321}])
+    assert value == 54_321
 
     assert unit == :"kCal/day"
-    {value, unit} = Point.decode_value("calories.bmr", [%{"fpVal" => 12345}])
-    assert value == 12345
+    {value, unit} = Point.decode_value("calories.bmr", [%{"fpVal" => 12_345}])
+    assert value == 12_345
     assert unit == :"kCal/day"
   end
   test "decode com.google.calories.bmr" do
-    {value, unit} = Point.decode_value("calories.bmr", [%{"intVal" => 54321}])
-    assert value == 54321
+    {value, unit} = Point.decode_value("calories.bmr", [%{"intVal" => 54_321}])
+    assert value == 54_321
     assert unit == :"kCal/day"
 
-    {value, unit} = Point.decode_value("calories.bmr", [%{"fpVal" => 12345}])
-    assert value == 12345
+    {value, unit} = Point.decode_value("calories.bmr", [%{"fpVal" => 12_345}])
+    assert value == 12_345
     assert unit == :"kCal/day"
   end
   test "decode com.google.hydration" do
-    {value, unit} = Point.decode_value("hydration", [%{"intVal" => 54321}])
-    assert value == 54321
+    {value, unit} = Point.decode_value("hydration", [%{"intVal" => 54_321}])
+    assert value == 54_321
     assert unit == :liters
 
-    {value, unit} = Point.decode_value("hydration", [%{"fpVal" => 12345}])
-    assert value == 12345
+    {value, unit} = Point.decode_value("hydration", [%{"fpVal" => 12_345}])
+    assert value == 12_345
     assert unit == :liters
   end
   test "decode com.google.weight" do
-    {value, unit} = Point.decode_value("weight", [%{"intVal" => 54321}])
-    assert value == 54321
+    {value, unit} = Point.decode_value("weight", [%{"intVal" => 54_321}])
+    assert value == 54_321
     assert unit == :kg
 
-    {value, unit} = Point.decode_value("weight", [%{"fpVal" => 12345}])
-    assert value == 12345
+    {value, unit} = Point.decode_value("weight", [%{"fpVal" => 12_345}])
+    assert value == 12_345
     assert unit == :kg
   end
   test "decode com.google.speed" do
-    {value, unit} = Point.decode_value("speed", [%{"intVal" => 54321}])
-    assert value == 54321
+    {value, unit} = Point.decode_value("speed", [%{"intVal" => 54_321}])
+    assert value == 54_321
     assert unit == :"meters/second"
 
-    {value, unit} = Point.decode_value("speed", [%{"fpVal" => 12345}])
-    assert value == 12345
+    {value, unit} = Point.decode_value("speed", [%{"fpVal" => 12_345}])
+    assert value == 12_345
     assert unit == :"meters/second"
   end
 
   test "decode_value com.google.activity.summary" do
-    {value, unit} = Point.decode_value("activity.summary", [%{"intVal" => 3, "mapVal" => []}, %{"intVal" => 61751051, "mapVal" => []}, %{"intVal" => 24, "mapVal" => []}])
+    {value, unit} = Point.decode_value("activity.summary", [%{"intVal" => 3, "mapVal" => []}, %{"intVal" => 61_751_051, "mapVal" => []}, %{"intVal" => 24, "mapVal" => []}])
     assert unit == GoogleFit.Dataset.ActivitySummary
-    assert value == %GoogleFit.Dataset.ActivitySummary{activity: GoogleFit.ActivityType.StillNotMoving, duration_millis: 61751051, num_segments: 24}
+    assert value == %GoogleFit.Dataset.ActivitySummary{activity: GoogleFit.ActivityType.StillNotMoving, duration_millis: 61_751_051, num_segments: 24}
   end
 
   test "decode_value com.google.nutrition.summary" do
@@ -95,7 +95,7 @@ defmodule GoogleFitTest.Dataset.Point do
 
   test "decode_value com.google.weight.summary" do
     {value, unit} = Point.decode_value("weight.summary", [%{"fpVal" => 66.65887451171875, "mapVal" => []}, %{"fpVal" => 68.5831069946289, "mapVal" => []}, %{"fpVal" => 66.40586853027344, "mapVal" => []}])
-    assert unit == GoogleFit.Dataset.WeightSummary
-    assert value == %GoogleFit.Dataset.WeightSummary{average: 66.65887451171875, maximum: 68.5831069946289, minimum: 66.40586853027344}
+    assert unit == GoogleFit.Dataset.NumberSummary
+    assert value == %GoogleFit.Dataset.NumberSummary{average: 66.65887451171875, maximum: 68.5831069946289, minimum: 66.40586853027344}
   end
 end
