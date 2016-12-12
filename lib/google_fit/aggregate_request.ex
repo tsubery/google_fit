@@ -12,7 +12,7 @@ defmodule GoogleFit.AggregateRequest do
 
   @day_millis 24 * 60 * 60 * 1000
   @duration_millis %{
-    "day" => @day_millis / (24 * 60),
+    "day" => @day_millis,
     "week" => @day_millis * 7,
     "month" => @day_millis * 31
   }
