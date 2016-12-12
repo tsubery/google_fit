@@ -22,7 +22,9 @@ defmodule GoogleFit.AggregateRequest do
     aggregated by time period. e.g. Data about daily/weekly totals.
   """
 
-  def by_time(start_date = %Date{}, end_date = %Date{}, period, filter)
+  @spec by_time(Calendar.date, Calendar.date, String.t, %DataSource{} | %DataType{}) ::
+    %Self{} | no_return
+  def by_time(start_date = %{}, end_date = %{calendar: Calendar.ISO}, period, filter)
     when period in ["day", "month", "week"] do
 
     %Self{}
@@ -35,12 +37,14 @@ defmodule GoogleFit.AggregateRequest do
     This function makes an api call to request aggregated data from google.
   """
 
+  @spec get(struct, %Self{}) :: {:ok, [Dataset]} | {:error, any}
   def get(client = %{}, %Self{body: body}) do
     %Request{client: client, body: body, method: :post, path: @path}
     |> Request.process(&decode/1)
   end
 
   @doc false
+  @spec agg_by(%Self{}, any) :: %Self{} | no_return
   defp agg_by(%Self{body: body}, %DataSource{id: ds_id}) do
     %Self{body: Map.put(body, "aggregateBy", [%{"dataSourceId": ds_id}])}
   end

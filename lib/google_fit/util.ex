@@ -51,7 +51,7 @@ defmodule GoogleFit.Util do
   end
 
   @doc false
-  def date_to_millis(date = %Date{}) do
+  def date_to_millis(date = %{calendar: Calendar.ISO}) do
     dt_iso = "#{Date.to_iso8601(date)}T00:00:00.000Z"
     case DateTime.from_iso8601(dt_iso) do
       {:ok, date_time, _offset} ->

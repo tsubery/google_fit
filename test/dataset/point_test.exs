@@ -29,6 +29,7 @@ defmodule GoogleFitTest.Dataset.Point do
     assert value == 12_345
     assert unit == :kCal
   end
+
   test "decode com.google.distance.delta" do
     {value, unit} = Point.decode_value("calories.bmr", [%{"intVal" => 54_321}])
     assert value == 54_321
@@ -38,6 +39,7 @@ defmodule GoogleFitTest.Dataset.Point do
     assert value == 12_345
     assert unit == :"kCal/day"
   end
+
   test "decode com.google.calories.bmr" do
     {value, unit} = Point.decode_value("calories.bmr", [%{"intVal" => 54_321}])
     assert value == 54_321
@@ -47,6 +49,7 @@ defmodule GoogleFitTest.Dataset.Point do
     assert value == 12_345
     assert unit == :"kCal/day"
   end
+
   test "decode com.google.hydration" do
     {value, unit} = Point.decode_value("hydration", [%{"intVal" => 54_321}])
     assert value == 54_321
@@ -56,6 +59,7 @@ defmodule GoogleFitTest.Dataset.Point do
     assert value == 12_345
     assert unit == :liters
   end
+
   test "decode com.google.weight" do
     {value, unit} = Point.decode_value("weight", [%{"intVal" => 54_321}])
     assert value == 54_321
@@ -65,6 +69,7 @@ defmodule GoogleFitTest.Dataset.Point do
     assert value == 12_345
     assert unit == :kg
   end
+
   test "decode com.google.speed" do
     {value, unit} = Point.decode_value("speed", [%{"intVal" => 54_321}])
     assert value == 54_321
