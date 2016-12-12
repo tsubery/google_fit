@@ -1,30 +1,20 @@
 defmodule GoogleFit.Dataset.Point do
+  @moduledoc """
+    This struct represents a datapoint in a dataset
+  """
+
   alias GoogleFit.Dataset.{Nutrition, ActivitySummary, WeightSummary}
   alias GoogleFit.ActivityType
   import GoogleFit.Util
 
-  @bmr_units :"kCal/day"
-  @steps_units :steps
-  @weight_units :kg
-  @hydration_units :liters
-  @calories_units :kcal
-  @speed_units :"meters/second"
-  @distance_units :meters
-  @unknown_units :unknown
-
-  @enforce_keys ~w[
-    data_type_name start_time end_time modified_time
-    origin_data_source_id unit value
-  ]a
+  @enforce_keys ~w[data_type_name start_time end_time modified_time origin_data_source_id unit value]a
   defstruct @enforce_keys
 
-  # @type unit :: @steps_units | @bmr_units | @weight_units |
-  # @hydration_units | @calories_units | @speed_units | @distance_units
-
   @doc false
-  def decode(json_map = %{}) do
-    data_type_name = json_map["dataTypeName"]
-    {value, unit} = decode_value(data_type_name, json_map["value"])
+  def decode(json_map = %{"dataTypeName" => data_type_name}) do
+    {value, unit} = data_type_name |>
+      String.replace_prefix("com.google.","") |>
+      decode_value(json_map["value"])
 
     %__MODULE__{
       data_type_name: data_type_name,
@@ -37,53 +27,26 @@ defmodule GoogleFit.Dataset.Point do
     }
   end
 
+  @numeric_names ~w[calories.expended distance.delta calories.bmr hydration weight speed step_count.delta]
+  @numeric_units ~w[kCal meters kCal/day liters kg meters/second steps]a
+  @numeric_map Enum.zip(@numeric_names, @numeric_units) |> Map.new
+  def decode_value(dtn, [%{"fpVal" => val}]) when dtn in @numeric_names do
+    {val, Map.fetch!(@numeric_map, dtn)}
+  end
+
+  def decode_value(dtn, [%{"intVal" => val}]) when dtn in @numeric_names do
+    {val, Map.fetch!(@numeric_map, dtn)}
+  end
+
+  @decoder_names ~w[nutrition nutrition.summary activity.summary weight.summary activity.segment]
+  @decoder_modules [Nutrition, Nutrition, ActivitySummary, WeightSummary, ActivityType]
+  @decoder_map Enum.zip(@decoder_names, @decoder_modules) |> Map.new
   @doc false
-  defp decode_value("com.google.calories.bmr", [%{"fpVal" => val}]) do
-    {val, @bmr_units}
+  def decode_value(dtn, json_list) when dtn in @decoder_names do
+    module = Map.fetch!(@decoder_map, dtn)
+    {module.decode(json_list), module}
   end
 
-  defp decode_value("com.google.calories.expended", [%{"fpVal" => val}]) do
-    {val, @calories_units}
-  end
-
-  defp decode_value("com.google.weight", [%{"fpVal" => val}]) do
-    {val, @weight_units}
-  end
-
-  defp decode_value("com.google.hydration", [%{"fpVal" => val}]) do
-    {val, @hydration_units}
-  end
-
-  defp decode_value("com.google.speed", [%{"fpVal" => val}]) do
-    {val, @speed_units}
-  end
-
-  defp decode_value("com.google.distance.delta", [%{"fpVal" => val}]) do
-    {val, @distance_units}
-  end
-
-  defp decode_value("com.google.step_count.delta", [%{"intVal" => val}]) do
-    {val, @steps_units}
-  end
-
-  defp decode_value("com.google.activity.segment", [%{"intVal" => code}]) do
-    {ActivityType.find(code), ActivityType}
-  end
-
-  defp decode_value("com.google.nutrition", json_list) do
-    val = Nutrition.decode(json_list)
-    {val, Nutrition}
-  end
-
-  defp decode_value("com.google.activity.summary", json_list) do
-    val = ActivitySummary.decode(json_list)
-    {val, ActivitySummary}
-  end
-
-  defp decode_value("com.google.weight.summary", json_list) do
-    val = WeightSummary.decode(json_list)
-    {val, WeightSummary}
-  end
-
-  defp decode_value(_, json_map), do: {json_map, @unknown_units}
+  @unknown_units :unknown
+  def decode_value(_, json_map), do: {json_map, @unknown_units}
 end

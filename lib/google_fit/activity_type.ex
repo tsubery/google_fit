@@ -120,5 +120,9 @@ defmodule GoogleFit.ActivityType do
     Map.fetch!(@constants, activity_type)
   end
 
+  def decode([%{"intVal" => code}]) do
+    {find(code), Self}
+  end
+
   def find(id), do: @name_by_id[id]
 end
