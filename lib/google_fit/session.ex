@@ -27,22 +27,25 @@ defmodule GoogleFit.Session do
   end
 
   @doc false
-  def decode(json_map = %{}) do
-    json_map |>
-    Map.fetch!("session") |>
-    Enum.map(fn map ->
-      %__MODULE__{
-        id: map["id"],
-        name: map["name"],
-        description: map["description"],
-        start_time: from_millis(map["startTimeMillis"]),
-        end_time: from_millis(map["endTimeMillis"]),
-        modified_time: from_millis(map["modifiedTimeMillis"]),
-        application: Application.decode(map["application"]),
-        activity_type: GoogleFit.ActivityType.find(map["activityType"]),
-        active_time_millis: map["activeTimeMillis"],
-      }
-    end
-  )
+  def decode(%{ "session" => sessions}) do
+    sessions |> Enum.map(&decode_session/1)
+  end
+
+  defp decode_session(map = %{
+    "id" => id,
+    "startTimeMillis" => start_ms,
+    "endTimeMillis" => end_ms
+  }) do
+    %__MODULE__{
+      id: id,
+      name: map["name"],
+      description: map["description"],
+      start_time: from_millis(start_ms),
+      end_time: from_millis(end_ms),
+      modified_time: from_millis(map["modifiedTimeMillis"]),
+      application: Application.decode(map["application"]),
+      activity_type: GoogleFit.ActivityType.find(map["activityType"]),
+      active_time_millis: map["activeTimeMillis"],
+    }
   end
 end
