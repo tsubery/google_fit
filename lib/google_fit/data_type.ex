@@ -25,13 +25,10 @@ defmodule GoogleFit.DataType do
   defstruct name: nil, fields: []
 
   @doc false
-  def decode(json_map = %{}) do
-    fields = json_map
-             |> Map.fetch!("field")
-             |> Enum.map(&Field.decode/1)
+  def decode(%{"field" => field_json, "name" => name}) do
     %__MODULE__{
-      name: json_map["name"],
-      fields: fields
+      name: name,
+      fields: Enum.map(field_json, &Field.decode/1)
     }
   end
 end

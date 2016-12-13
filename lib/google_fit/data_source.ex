@@ -14,31 +14,35 @@ defmodule GoogleFit.DataSource do
   def path, do: @path
 
   def get(client = %{}, id) do
-    req = %Request{client: client, path: "#{@path}/#{id}"}
-
-    Request.process(req, &decode/1)
+    %Request{client: client, path: "#{@path}/#{id}"}
+    |> Request.process(&decode/1)
   end
 
-  def list(client = %{}, data_type_name_filter \\ nil) do
-    params = data_type_name_filter && %{dataTypeName: data_type_name_filter}
+  def list(client = %{}) do
+    %Request{client: client, path: @path}
+    |> Request.process(&decode/1)
+  end
 
-    req = %Request{client: client, path: @path, params: params}
-
-    Request.process(req, &decode/1)
+  def list(client = %{}, %DataType{name: dtn}) do
+    %Request{client: client, path: @path, params: %{dataTypeName: dtn}}
+    |> Request.process(&decode/1)
   end
 
   defmodule Device do
     @moduledoc """
       This struct represents details about a device that is reporting data to a data source
     """
-
-    @keys ~w[uid type version model manufacturer]a
-    defstruct @keys
+    defstruct ~w[uid type version model manufacturer]a
 
     @doc false
-    def decode(nil), do: nil
     def decode(map = %{}) do
-      %__MODULE__{} |> Map.merge(GoogleFit.Util.normalize_keys(map, @keys))
+      %__MODULE__{
+        uid: map["uid"],
+        model: map["model"],
+        type: map["type"],
+        version: map["version"],
+        manufacturer: map["manufacturer"]
+      }
     end
   end
 
@@ -47,18 +51,13 @@ defmodule GoogleFit.DataSource do
     json_map |> Enum.map(&decode/1)
   end
 
-  def decode(ds_map = %{"dataStreamId" => id}) do
-
-    application = Application.decode(ds_map["application"])
-    data_type = DataType.decode(ds_map["dataType"])
-    device = Device.decode(ds_map["device"])
-
+  def decode(ds_map = %{"dataStreamId" => id, "dataType" => type}) do
     %__MODULE__{
       name: ds_map["dataStreamName"],
       type: ds_map["type"],
-      application: application,
-      data_type: data_type,
-      device: device,
+      application: Application.decode(ds_map["application"]),
+      data_type: DataType.decode(type),
+      device: ds_map["device"] && Device.decode(ds_map["device"]),
       id: id
     }
   end

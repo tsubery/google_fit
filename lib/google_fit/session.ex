@@ -27,7 +27,7 @@ defmodule GoogleFit.Session do
   end
 
   @doc false
-  def decode(%{ "session" => sessions}) do
+  def decode(%{"session" => sessions}) do
     sessions |> Enum.map(&decode_session/1)
   end
 

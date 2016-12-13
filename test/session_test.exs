@@ -3,8 +3,6 @@ defmodule GoogleFitTest.Session do
   alias Support.TestClient
 
   use ExUnit.Case
-  doctest Session
-
 
   @start_iso "2011-03-04T08:07:30Z"
   @end_iso "2024-12-31T13:14:10Z"
@@ -14,7 +12,7 @@ defmodule GoogleFitTest.Session do
   test "list function calls client with correct args" do
     test_client = %TestClient{id: "special snowflake"}
 
-    {:error, {client, url, params}} = Session.list(test_client, @start_dt, @end_dt)
+    {_, {client, url, params}} = Session.list(test_client, @start_dt, @end_dt)
 
     assert url == "https://www.googleapis.com/fitness/v1/users/me/sessions"
     assert client == test_client

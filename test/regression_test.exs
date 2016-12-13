@@ -14,10 +14,6 @@ defmodule RegressionTest do
   ]
   @check_reg_repo ~c[cd #{@regression_dir} && git status -s]
 
-  test "asdf" do
-
-  end
-
   setup_all do
     File.mkdir_p(@regression_dir)
     :os.cmd(@init_reg_repo)

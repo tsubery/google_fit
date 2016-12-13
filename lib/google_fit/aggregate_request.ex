@@ -67,7 +67,7 @@ defmodule GoogleFit.AggregateRequest do
     bucket = %{
       "durationMillis": Map.fetch!(@duration_millis, period),
        #As of now, 'period' parameter is required but ignored by the server
-      "period": %{"type": "day"}
+      "period": %{"type": period}
     }
     %Self{body: Map.put(body, "bucketByTime", [bucket])}
   end
