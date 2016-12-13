@@ -18,5 +18,5 @@ erl_crash.dump
 
 tags
 
-test/data/*_regression.json
+test/regression_data
 .idea

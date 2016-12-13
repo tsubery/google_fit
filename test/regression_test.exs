@@ -1,4 +1,4 @@
-defmodule GoogleFitTest do
+defmodule RegressionTest do
   alias GoogleFit.{Session, Dataset, DataSource, DataType, AggregateRequest}
   require IEx
   use ExUnit.Case
@@ -7,6 +7,41 @@ defmodule GoogleFitTest do
   @moduletag :external
   @nutrition_ds_id "raw:com.google.nutrition:com.sillens.shapeupclub:"
   @steps_ds_id "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps"
+  @regression_dir "test/regression_data"
+  @init_reg_repo ~c[
+    (cd #{@regression_dir} && test -d .git && git reset --hard && git clean -d -f) ||
+    (cd #{@regression_dir} && git init && git add . && git commit -am "init")
+  ]
+  @check_reg_repo ~c[cd #{@regression_dir} && git status -s]
+
+  test "asdf" do
+
+  end
+
+  setup_all do
+    File.mkdir_p(@regression_dir)
+    :os.cmd(@init_reg_repo)
+
+    on_exit fn ->
+      :os.cmd(@check_reg_repo) |> IO.puts
+    end
+  end
+
+  def same_as_before(key, content) do
+    file = "#{@regression_dir}/#{key}.json"
+    encoded = Poison.encode!(content)
+               |> String.replace(~r/([{},])/,"\\1\n")
+
+    if System.get_env("WRITE_REGRESSION") do
+      File.write!(file, encoded)
+    end
+    case File.read(file) do
+      {:ok, reference} ->
+        assert encoded == reference
+      {:error, _error} ->
+        raise "Couldn't read reference file. Try setting WRITE_REGRESSION in environment"
+    end
+  end
 
   def client  do
     token = %OAuth2.AccessToken{
@@ -30,23 +65,6 @@ defmodule GoogleFitTest do
     ])
     {:ok, client} = OAuth2.Client.refresh_token(oc, [], [], [])
     client
-  end
-
-  def same_as_before(key, content) do
-    file = "test/data/#{key}_regression.json"
-    encoded = Poison.encode!(content)
-               |> String.replace(~r/([{},])/,"\\1\n")
-
-    if System.get_env("WRITE_REGRESSION") do
-      File.mkdir_p("test/data")
-      File.write!(file, encoded)
-    end
-    case File.read(file) do
-      {:ok, reference} ->
-        assert encoded == reference
-      {:error, _error} ->
-        raise "Couldn't read reference file. Try setting WRITE_REGRESSION in environment"
-    end
   end
 
   test "sessions get" do
