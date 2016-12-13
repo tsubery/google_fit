@@ -2,6 +2,8 @@ defmodule GoogleFit.Dataset.ActivitySummary do
   @moduledoc """
     This struct represents a aggregated activity datapoint value
   """
+  alias GoogleFit.Dataset.ValueFormatError
+
   defstruct ~w[
     activity duration_millis num_segments
     ]a
@@ -21,6 +23,6 @@ defmodule GoogleFit.Dataset.ActivitySummary do
 
   @doc false
   def decode(unknown) do
-    raise "Unknown activity summary format #{inspect unknown}"
+    raise ValueFormatError, message: "Unknown activity summary format #{inspect unknown}"
   end
 end

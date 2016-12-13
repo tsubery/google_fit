@@ -3,6 +3,8 @@ defmodule GoogleFit.ActivityType do
     This module is a namespace for all supported activity types.
   """
 
+  alias GoogleFit.Dataset.ValueFormatError
+
   alias __MODULE__, as: Self
   @constants %{
     Self.InVehicle => 0,
@@ -128,6 +130,10 @@ defmodule GoogleFit.ActivityType do
   @doc false
   def decode([%{"intVal" => code}]) do
     {find(code), Self}
+  end
+
+  def decode(unknown) do
+    raise ValueFormatError, message: "Unknown activity type format #{inspect unknown}"
   end
 
   @doc false

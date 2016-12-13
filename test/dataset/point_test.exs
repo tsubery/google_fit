@@ -98,4 +98,13 @@ defmodule GoogleFitTest.Dataset.Point do
     assert unit == GoogleFit.Dataset.NumberSummary
     assert value == %GoogleFit.Dataset.NumberSummary{average: 66.65887451171875, maximum: 68.5831069946289, minimum: 66.40586853027344}
   end
+
+  test "unsupported formats" do
+    wrong_format = [%{"sum" => "ting wong"}]
+    Point.decoder_names |> Enum.each(fn(data_type_name)->
+      {value, unit} = Point.decode_value(data_type_name, wrong_format)
+      assert unit == :unknown
+      assert value == wrong_format
+    end)
+  end
 end

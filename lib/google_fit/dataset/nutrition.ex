@@ -4,6 +4,7 @@ defmodule GoogleFit.Dataset.Nutrition do
   """
 
   import GoogleFit.Util
+  alias GoogleFit.Dataset.ValueFormatError
 
   @meal_types %{
     0 => Unknown,
@@ -47,7 +48,7 @@ defmodule GoogleFit.Dataset.Nutrition do
 
   @doc false
   defp decode(unknown, _ = %__MODULE__{}) do
-    raise "Unknown nutritional format #{inspect unknown}"
+    raise ValueFormatError, message: "Unknown nutritional format #{inspect unknown}"
   end
 
   defp decode_kv(%{"key" => k, "value" => v}, acc) do

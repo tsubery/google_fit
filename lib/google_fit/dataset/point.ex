@@ -3,7 +3,7 @@ defmodule GoogleFit.Dataset.Point do
     This struct represents a datapoint in a dataset
   """
 
-  alias GoogleFit.Dataset.{Nutrition, ActivitySummary, NumberSummary}
+  alias GoogleFit.Dataset.{Nutrition, ActivitySummary, NumberSummary, ValueFormatError}
   alias GoogleFit.ActivityType
   import GoogleFit.Util
 
@@ -46,8 +46,13 @@ defmodule GoogleFit.Dataset.Point do
   def decode_value(dtn, json_list) when dtn in @decoder_names do
     module = Map.fetch!(@decoder_map, dtn)
     {module.decode(json_list), module}
+  rescue
+    ValueFormatError -> decode_value("",json_list)
   end
 
   @unknown_units :unknown
   def decode_value(_, json_map), do: {json_map, @unknown_units}
+
+  @doc false
+  def decoder_names(), do: @decoder_names
 end

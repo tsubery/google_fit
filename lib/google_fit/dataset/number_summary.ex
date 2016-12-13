@@ -3,6 +3,8 @@ defmodule GoogleFit.Dataset.NumberSummary do
     This module represents daily aggregation for numeric data types
   """
 
+  alias GoogleFit.Dataset.ValueFormatError
+
   defstruct ~w[average maximum minimum]a
 
   @doc false
@@ -20,6 +22,6 @@ defmodule GoogleFit.Dataset.NumberSummary do
 
   @doc false
   def decode(unknown) do
-    raise "Unknown weight summary format #{inspect unknown}"
+    raise ValueFormatError, message: "Unknown number summary format #{inspect unknown}"
   end
 end
