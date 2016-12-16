@@ -5,6 +5,8 @@
   "cowlib": {:hex, :cowlib, "1.0.2", "9d769a1d062c9c3ac753096f868ca121e2730b9a377de23dec0f7e08b1df84ee", [:make], []},
   "credo": {:hex, :credo, "0.5.3", "0c405b36e7651245a8ed63c09e2d52c2e2b89b6d02b1570c4d611e0fcbecf4a2", [:mix], [{:bunt, "~> 0.1.6", [hex: :bunt, optional: false]}]},
   "dialyxir": {:hex, :dialyxir, "0.4.1", "236056d6acd25f740f336756c0f3b5dd6e2f0156074bc15f3b779aeee15390c8", [:mix], []},
+  "earmark": {:hex, :earmark, "1.0.3", "89bdbaf2aca8bbb5c97d8b3b55c5dd0cff517ecc78d417e87f1d0982e514557b", [:mix], []},
+  "ex_doc": {:hex, :ex_doc, "0.14.5", "c0433c8117e948404d93ca69411dd575ec6be39b47802e81ca8d91017a0cf83c", [:mix], [{:earmark, "~> 1.0", [hex: :earmark, optional: false]}]},
   "exjsx": {:hex, :exjsx, "3.2.1", "1bc5bf1e4fd249104178f0885030bcd75a4526f4d2a1e976f4b428d347614f0f", [:mix], [{:jsx, "~> 2.8.0", [hex: :jsx, optional: false]}]},
   "gettext": {:hex, :gettext, "0.12.2", "4f71a0df7b0bf5693419da593b4ddde558cc28e8f56a991fbfc2b51be1d5c848", [:mix], []},
   "goth": {:hex, :goth, "0.2.1", "c202289aebfbe8c5d3d0c594f63f7a7631f7d75cd20c5ca66626a5e6dd68e060", [:mix], [{:httpoison, "~> 0.9.0", [hex: :httpoison, optional: false]}, {:json_web_token, "~> 0.2.5", [hex: :json_web_token, optional: false]}, {:poison, "~> 2.1", [hex: :poison, optional: false]}]},
