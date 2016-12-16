@@ -1,0 +1,12 @@
+language: elixir
+elixir:
+  - 1.4.0-rc.1
+otp_release:
+  - 17.5
+  - 18.2
+  - 19.0
+script:
+  - mix test --trace  --include external:true
+cache:
+  directories:
+    - test/regression_data

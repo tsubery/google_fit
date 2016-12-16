@@ -1,6 +1,6 @@
-# GoogleFit
+# GoogleFit [![Build Status](https://travis-ci.org/tsubery/google_fit.svg?branch=master)](https://travis-ci.org/tsubery/google_fit)
 
-**TODO: Add description**
+This Library wraps GoogleFit API. With user's consent it allows to read data about sport activities, weight & nutrition, sleep and more.
 
 ## Installation
 

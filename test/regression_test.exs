@@ -16,11 +16,16 @@ defmodule RegressionTest do
 
   setup_all do
     File.mkdir_p(@regression_dir)
-    :os.cmd(@init_reg_repo)
+    if nil == System.get_env("CI") do
+      :os.cmd(@init_reg_repo)
 
-    on_exit fn ->
-      :os.cmd(@check_reg_repo) |> IO.puts
+      on_exit fn ->
+        :os.cmd(@check_reg_repo) |> IO.puts
+      end
+    else
+      IO.puts "Skipping regression git"
     end
+    :ok
   end
 
   def same_as_before(key, content) do
@@ -34,8 +39,8 @@ defmodule RegressionTest do
     case File.read(file) do
       {:ok, reference} ->
         assert encoded == reference
-      {:error, _error} ->
-        raise "Couldn't read reference file. Try setting WRITE_REGRESSION in environment"
+      {:error, reason} ->
+        raise "Couldn't read reference file #{file} because #{reason}. Try setting WRITE_REGRESSION in environment"
     end
   end
 
