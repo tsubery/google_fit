@@ -4,8 +4,8 @@ defmodule GoogleFitTest.Session do
 
   use ExUnit.Case
 
-  @start_iso "2011-03-04T08:07:30Z"
-  @end_iso "2024-12-31T13:14:10Z"
+  @start_iso "2011-03-04T08:07:30.000Z"
+  @end_iso "2024-12-31T13:14:10.000Z"
   @start_dt DateTime.from_iso8601(@start_iso) |> elem(1)
   @end_dt DateTime.from_iso8601(@end_iso) |> elem(1)
 

@@ -17,10 +17,9 @@ defmodule GoogleFit.Session do
   defstruct @enforce_keys
 
   def list(client = %{}, start_time = %DateTime{}, end_time =  %DateTime{}) do
-
     params = %{
-      startTime: DateTime.to_iso8601(start_time),
-      endTime: DateTime.to_iso8601(end_time)
+      startTime: google_iso8601(start_time),
+      endTime: google_iso8601(end_time)
     }
     req = %Request{client: client, path: @path, params: params}
     Request.process(req, &decode/1)
@@ -47,5 +46,10 @@ defmodule GoogleFit.Session do
       activity_type: GoogleFit.ActivityType.find(map["activityType"]),
       active_time_millis: map["activeTimeMillis"],
     }
+  end
+  def google_iso8601(datetime) do
+    datetime
+    |> DateTime.to_iso8601
+    |> String.replace(~r/:(\d\d)Z/,":\\1.000Z")
   end
 end
