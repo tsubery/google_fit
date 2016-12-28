@@ -44,7 +44,7 @@ defmodule RegressionTest do
     end
   end
 
-  def client  do
+  def client do
     token = %OAuth2.AccessToken{
       refresh_token: System.get_env("MY_GFIT_REFRESH_TOKEN") || raise("missing_env")
     }
@@ -81,15 +81,15 @@ defmodule RegressionTest do
   end
 
   test "nutrition dataset" do
-    {:ok, start_ts, 0} = DateTime.from_iso8601("2016-12-01T23:04:08Z")
-    {:ok, end_ts, 0} = DateTime.from_iso8601("2016-12-05T23:04:08Z")
+    {:ok, start_ts, 0} = DateTime.from_iso8601("2016-12-11T00:00:00Z")
+    {:ok, end_ts, 0} = DateTime.from_iso8601("2016-12-18T00:00:00Z")
     {:ok, ds = %Dataset{}} =
       Dataset.get(client(),
                   %DataSource{id: @nutrition_ds_id},
                   start_ts,
                   end_ts
                 )
-    assert length(ds.points) == 38
+    assert length(ds.points) == 72
     assert same_as_before("nutrition_ds", ds)
   end
   test "steps dataset" do
