@@ -101,7 +101,7 @@ defmodule RegressionTest do
                   start_ts,
                   end_ts
                 )
-    assert length(ds.points) == 663
+    assert length(ds.points) == 664
     assert same_as_before("steps_ds", ds)
   end
 

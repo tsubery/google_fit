@@ -12,7 +12,7 @@ defmodule GoogleFit.Request do
     path: path
   }, decoder) do
     client
-    |> http_lib.get(url(path), [], params: params) |>
+    |> http_lib.get(url(path), [], params: params, recv_timeout: 120000) |>
     handle_reply(decoder)
   end
 
@@ -24,7 +24,7 @@ defmodule GoogleFit.Request do
   }, decoder) do
 
     client
-    |> http_lib.post(url(path), body, @json_headers)
+    |> http_lib.post(url(path), body, @json_headers, recv_timeout: 120000)
     |> handle_reply(decoder)
   end
 
