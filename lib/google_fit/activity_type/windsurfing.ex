@@ -1,5 +1,5 @@
 defmodule GoogleFit.ActivityType.Windsurfing do
-  @moduledoc "Windsurfing activity type."
+  @moduledoc false
 
   def code, do: GoogleFit.ActivityType.code(__MODULE__)
 end

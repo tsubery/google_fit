@@ -1,5 +1,5 @@
 defmodule GoogleFit.ActivityType.InlineSkatingRollerblading do
-  @moduledoc "InlineSkatingRollerblading activity type."
+  @moduledoc false
 
   def code, do: GoogleFit.ActivityType.code(__MODULE__)
 end

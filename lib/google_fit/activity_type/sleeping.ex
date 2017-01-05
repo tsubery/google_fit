@@ -1,5 +1,5 @@
 defmodule GoogleFit.ActivityType.Sleeping do
-  @moduledoc "Sleeping activity type."
+  @moduledoc false
 
   def code, do: GoogleFit.ActivityType.code(__MODULE__)
 end

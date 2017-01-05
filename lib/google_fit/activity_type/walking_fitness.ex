@@ -1,5 +1,5 @@
 defmodule GoogleFit.ActivityType.WalkingFitness do
-  @moduledoc "WalkingFitness activity type."
+  @moduledoc false
 
   def code, do: GoogleFit.ActivityType.code(__MODULE__)
 end

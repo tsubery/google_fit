@@ -1,5 +1,5 @@
 defmodule GoogleFit.ActivityType.KiteSkiing do
-  @moduledoc "KiteSkiing activity type."
+  @moduledoc false
 
   def code, do: GoogleFit.ActivityType.code(__MODULE__)
 end
