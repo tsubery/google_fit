@@ -10,18 +10,19 @@ defmodule GoogleFit.Dataset do
   defstruct @enforce_keys
 
   @path "datasets"
-  @nano_factor 1_000_000_000
 
   def get(client = %{},
           %DataSource{id: ds_id},
           start_time = %DateTime{},
           end_time =  %DateTime{}) do
 
-    time_range = "#{to_nanos(start_time)}-#{to_nanos(end_time)}"
-    path = [DataSource.path, ds_id, @path, time_range] |> Enum.join("/")
+    r_start = DateTime.to_unix(start_time, :nanosecond)
+    r_end = DateTime.to_unix(end_time, :nanosecond)
 
-    %Request{client: client, path: path} |>
-      Request.process(&decode/1)
+    path = Enum.join([DataSource.path, ds_id, @path, "#{r_start}-#{r_end}"], "/")
+
+    %Request{client: client, path: path}
+    |> Request.process(&decode/1)
   end
 
   @doc false
@@ -55,5 +56,4 @@ defmodule GoogleFit.Dataset do
   end
 
   defp decode_points(points), do: Enum.map(points, &Point.decode/1)
-  def to_nanos(dt), do: DateTime.to_unix(dt) * @nano_factor
 end
