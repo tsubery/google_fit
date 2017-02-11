@@ -10,7 +10,7 @@ defmodule RegressionTest do
   @regression_dir "test/regression_data"
   @init_reg_repo ~c[
     (cd #{@regression_dir} && test -d .git && git reset --hard && git clean -d -f) ||
-    (cd #{@regression_dir} && git init && git add . && git commit -am "init")
+    (mkdir -p #{@regression_dir} && cd #{@regression_dir} && git init && git add . && git commit -am "init")
   ]
   @check_reg_repo ~c[cd #{@regression_dir} && git status -s]
 
