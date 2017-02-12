@@ -14,7 +14,8 @@ defmodule GoogleFit.Dataset do
   def get(client = %{},
           %DataSource{id: ds_id},
           start_time = %DateTime{},
-          end_time =  %DateTime{}) do
+          end_time =  %DateTime{},
+          opts \\ []) do
 
     r_start = DateTime.to_unix(start_time, :nanosecond)
     r_end = DateTime.to_unix(end_time, :nanosecond)
@@ -22,7 +23,7 @@ defmodule GoogleFit.Dataset do
     path = Enum.join([DataSource.path, ds_id, @path, "#{r_start}-#{r_end}"], "/")
 
     %Request{client: client, path: path}
-    |> Request.process(&decode/1)
+    |> Request.process(Keyword.get(opts, :decoder, &decode/1))
   end
 
   @doc false

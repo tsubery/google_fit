@@ -13,19 +13,20 @@ defmodule GoogleFit.DataSource do
 
   def path, do: @path
 
-  def get(client = %{}, id) do
+  def get(client = %{}, id, opts \\ []) do
     %Request{client: client, path: "#{@path}/#{id}"}
-    |> Request.process(&decode/1)
+    |> Request.process(Keyword.get(opts, :decoder, &decode/1))
   end
 
-  def list(client = %{}) do
+  def list(client = %{}), do: list(client, [])
+  def list(client = %{}, opts) when is_list(opts) do
     %Request{client: client, path: @path}
-    |> Request.process(&decode/1)
+    |> Request.process(Keyword.get(opts, :decoder, &decode/1))
   end
 
-  def list(client = %{}, %DataType{name: dtn}) do
+  def list(client = %{}, map = %DataType{name: dtn}, opts \\ []) when is_map(map) do
     %Request{client: client, path: @path, params: %{dataTypeName: dtn}}
-    |> Request.process(&decode/1)
+    |> Request.process(Keyword.get(opts, :decoder, &decode/1))
   end
 
   defmodule Device do

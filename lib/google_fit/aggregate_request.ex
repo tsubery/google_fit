@@ -35,9 +35,9 @@ defmodule GoogleFit.AggregateRequest do
     This function makes an api call to request aggregated data from google.
   """
 
-  def get(client = %{}, %Self{body: body}) do
+  def get(client = %{}, %Self{body: body}, opts \\ []) do
     %Request{client: client, body: body, method: :post, path: @path}
-    |> Request.process(&decode/1)
+    |> Request.process(Keyword.get(opts, :decoder, &decode/1))
   end
 
   @doc false

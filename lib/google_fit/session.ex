@@ -16,13 +16,13 @@ defmodule GoogleFit.Session do
 
   defstruct @enforce_keys
 
-  def list(client = %{}, start_time = %DateTime{}, end_time =  %DateTime{}) do
+  def list(client = %{}, start_time = %DateTime{}, end_time =  %DateTime{}, opts \\ []) do
     params = %{
       startTime: google_iso8601(start_time),
       endTime: google_iso8601(end_time)
     }
-    req = %Request{client: client, path: @path, params: params}
-    Request.process(req, &decode/1)
+    %Request{client: client, path: @path, params: params}
+    |> Request.process(Keyword.get(opts, :decoder, &decode/1))
   end
 
   @doc false
