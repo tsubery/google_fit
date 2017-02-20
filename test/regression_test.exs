@@ -122,7 +122,7 @@ defmodule RegressionTest do
 
   test "data_sources list" do
     {:ok, data_sources} = DataSource.list(client())
-    assert length(data_sources) == 167
+    assert length(data_sources) == 168
     assert same_as_before("data_sources", data_sources)
 
     test_steps_ds (data_sources |> Enum.find(&(&1.id == @steps_ds_id)))
